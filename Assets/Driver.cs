@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Driver : MonoBehaviour
 {
-    public float speed = 2;
+    [Header("[Speed Settings]:")]
+    [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float steerSpeed = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,10 +17,17 @@ public class Driver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate(0, 0, 2);
-        // transform.position = new Vector2(0, 2) * Time.deltaTime;
-        // transform.Translate(new Vector2(2, 0) * speed * Time.deltaTime);
-        transform.Rotate(new Vector3(0, 0, 10) * speed * Time.deltaTime);
-        transform.Translate(new Vector2(0, 2) * speed * Time.deltaTime);
+        float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
+        float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        // use -steerAmount because pressing left = -1 but we want to turn left which requires a positive value
+        transform.Rotate(0, 0, -steerAmount);
+        transform.Translate(new Vector2(0, moveAmount));
+
+        if(Input.GetKeyDown(KeyCode.LeftShift)){
+            moveSpeed = moveSpeed * 2;
+        }
+        if(Input.GetKeyUp(KeyCode.LeftShift)){
+            moveSpeed = 10f;
+        }
     }
 }
