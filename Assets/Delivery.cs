@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collision : MonoBehaviour
+public class Delivery : MonoBehaviour
 {
+    private int packageCount = 0;
+
     void OnCollisionEnter2D(Collision2D other) 
     {
         Debug.Log($"{this.name} hit {other.gameObject.name} at {other.GetContact(0)}");
@@ -15,6 +17,11 @@ public class Collision : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) 
     {
-        Debug.Log($"{this.name} was triggered");
+        if(other.tag == "Package"){
+            Debug.Log($"{other.gameObject.name} was triggered");
+            packageCount++;
+            Debug.Log($"Packages: {packageCount}");
+            Destroy(other.gameObject);
+        }
     }
 }

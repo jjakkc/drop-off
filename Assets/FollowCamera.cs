@@ -6,6 +6,7 @@ public class FollowCamera : MonoBehaviour
 {
     [SerializeField] GameObject thingToFollow;
 
+    // using LateUpdate over Update to reduce possible jitteryness that may be caused in script order execution
     void LateUpdate()
     {
         transform.position = new Vector3(
