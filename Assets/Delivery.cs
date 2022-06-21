@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Delivery : MonoBehaviour
 {
-    private int packageCount = 0;
+    private bool hasPackage;
 
     void OnCollisionEnter2D(Collision2D other) 
     {
         Debug.Log($"{this.name} hit {other.gameObject.name} at {other.GetContact(0)}");
         Debug.Log($"Hit: {other.contactCount}");
+        if(other.gameObject.tag == "Collidable"){
+            Driver driver = GetComponent<Driver>();
+            driver.loseHealth(10);
+            Debug.Log(driver.getHealth());
+        }
         // other.transform.localScale *= 2;
         // SpriteRenderer s = other.gameObject.GetComponent<SpriteRenderer>();
         // s.color = Color.blue;
@@ -17,11 +22,18 @@ public class Delivery : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.tag == "Package"){
+        if(other.tag == "Package" && hasPackage == false){
             Debug.Log($"{other.gameObject.name} was triggered");
-            packageCount++;
-            Debug.Log($"Packages: {packageCount}");
+            hasPackage = true;
             Destroy(other.gameObject);
+        }
+        if(other.tag == "Customer" && hasPackage){
+            hasPackage = false;
+            SpriteRenderer customerSprite = other.gameObject.GetComponent<SpriteRenderer>();
+            customerSprite.color = Color.green;
+            Customer customer = other.gameObject.GetComponent<Customer>();
+            customer.setDelivered(true);
+            Debug.Log(customer.getDelivered());
         }
     }
 }

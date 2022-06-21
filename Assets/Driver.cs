@@ -8,6 +8,9 @@ public class Driver : MonoBehaviour
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float steerSpeed = 1f;
 
+    [Header("[Stats:]")]
+    [SerializeField] int health = 100;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,5 +32,12 @@ public class Driver : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.LeftShift)){
             moveSpeed = 10f;
         }
+    }
+
+    public void loseHealth(int amount){
+        health -= amount;
+    }
+    public int getHealth(){
+        return health;
     }
 }
